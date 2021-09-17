@@ -1,0 +1,31 @@
+
+{% include 'includes/settings.html.twig' %}
+
+<section id="services" class="{% if pimcore_checkbox('background').isChecked() %} about section-bg my-4 {% else%} services {% endif %}">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+
+        <div class="section-title">
+            {% if editmode %}
+                <h3>{{ pimcore_input("title") }}</h3>
+                <h3>{{ pimcore_input("subtitle") }}</h3>
+                <p>{{ pimcore_input("text") }}</p>
+            {% else %}
+                <h2>{{ pimcore_input("title").render }}</h2>
+                <h3>{{ pimcore_input("subtitle").render }}</h3>
+                <p>{{ pimcore_input("text").render }}</p>
+            {% endif %}
+        </div>
+
+        <div class="row">
+            {% for service in services %}
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch aos-init aos-animate" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bxl-dribbble"></i></div>
+                        <h4><a href="{{ service.id }}">{{ service.title }}</a></h4>
+                        <p>{{ service.content }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

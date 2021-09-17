@@ -1,0 +1,7 @@
+{% extends 'master.html.twig' %}
+
+{% block content %}
+    {{ pimcore_areablock('content', {
+        'allowed': ['headlines', 'wysiwyg', 'image', 'block' , 'block2', 'service', 'skills', 'projects', 'teams']
+    }) }}
+{% endblock %}

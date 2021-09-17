@@ -1,0 +1,4 @@
+swiftmailer:
+    transport:  smtp
+    host:       claude_simweb_mail
+    port:   1025

@@ -1,0 +1,57 @@
+{% if editmode %}
+    {% do pimcore_head_link().appendStylesheet(asset('static/assets/css/style.css')) %}
+    {{ pimcore_head_link() }}
+{% endif %}
+{#footer#}
+<footer id="footer">
+    <div class="footer-newsletter">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <h4>{{ 'banner_title'|trans }}</h4>
+                    <p>{{ 'banner_text'|trans }}</p>
+                    <form action="" method="post">
+                        <input type="email" name="email"><input type="submit" value="abonnieren">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 footer-contact">
+                    <h3><span class="text-primary font-weight-bold">Sim</span><span class="text-info font-weight-bold">Web</span><span>.</span></h3>
+                    <p>
+                        {{ 'firm_street'|trans }} <br>
+                        {{ 'firm_postcode'|trans }}
+                        {{ 'firm_country'|trans }} <br><br>
+                        <strong>Phone:</strong> {{ 'firm_phone'|trans }}<br>
+                        <strong>Email:</strong> {{ 'firm_email'|trans }}<br>
+                    </p>
+                </div>
+                {% if editmode %}
+                    <h3 class="float-left">{{ 'Footer Column(s):' }}</h3>
+                {% endif %}
+                {% for i in pimcore_iterate_block(pimcore_block('mainlinkblock')) %}
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h5>{{ pimcore_input('mainBlockTitle', {'placeholder': 'Footer Title'}) }}</h5>
+                        <ul class="list-unstyled text-small">
+                            {% for i in pimcore_iterate_block(pimcore_block('linkblock')) %}
+                                <li class="bx bx-chevron-right">{{ pimcore_link('myLink', {'class': "text-muted"}) }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% if editmode %}
+                        <hr />
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="container py-4">
+        <div class="copyright">
+            © Copyright <strong><span>SimWeb</span></strong>. All Rights Reserved
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    {% apply spaceless %}
+
+        <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i">
+        <link rel="stylesheet" type="text/css" href="{{ asset('build/css/app.css') }}">
+
+        {% if editmode %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+        {% endif %}
+
+        <script src="{{ asset('vendor/aos/aos.js') }}"></script>
+        <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('vendor/glightbox/js/glightbox.min.js') }}"></script>
+        <script src="{{ asset('vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+        <script src="{{ asset('vendor/php-email-form/validate.js') }}"></script>
+        <script src="{{ asset('vendor/purecounter/purecounter.js') }}"></script>
+        <script src="{{ asset('vendor/swiper/swiper-bundle.min.js') }}"></script>
+        <script src="{{ asset('vendor/waypoints/noframework.waypoints.js') }}"></script>
+        <script src="{{ asset('js/main.js') }}"></script>
+
+        {% if not editmode %}
+        <script src="{{ asset('js/main.js') }}"></script>
+        {% endif %}
+
+        {% if not document is defined or not document %}
+            {% set document = pimcore_document(1) %}
+        {% endif %}
+
+        {% if document is instanceof('\\Pimcore\\Model\\Document\\Link') %}
+            {# @var document \Pimcore\Model\Document\Link #}
+            {% set document = document.getObject() %}
+        {% endif %}
+
+        {% if document.getTitle() is not empty %}
+            {% do pimcore_head_title().set(document.getTitle()) %}
+        {% endif %}
+
+        {% if document.getDescription() is not empty %}
+            {% do pimcore_head_meta().setDescription(document.getDescription()) %}
+        {% endif %}
+
+        {% do pimcore_head_title().append('Papyrus') %}
+        {% do pimcore_head_title().setSeparator(' : ') %}
+        {% set isPortal = ((isPortal is defined) and isPortal) %}
+    {% endapply %}
+
+    {# we're using the deferred extension here to make sure this block is rendered after all helper calls #}
+    {% block layout_head_meta deferred %}
+    {{ pimcore_head_title() }}
+    {{ pimcore_head_meta() }}
+
+    {% if pimcore_placeholder('canonical').count() %}
+        <link rel="canonical" href="{{ pimcore_placeholder('canonical') }}"/>
+    {% endif %}
+
+    {% endblock %}
+
+    {% block head_stylesheets deferred %}
+    {{ pimcore_head_link() }}
+    {% endblock %}
+
+</head>
+<body>
+{# get root node if there is no document defined (for pages which are routed directly through static route) #}
+{% if not document is defined or not document %}
+    {% set document = pimcore_document(1) %}
+{% endif %}
+
+{# get the document which should be used to start in navigation | default home #}
+{% set navStartNode = document.getProperty('navigation_root') %}
+
+{% if not navStartNode is instanceof('\\Pimcore\\Model\\Document') %}
+    {% set navStartNode = pimcore_document(1) %}
+{% endif %}
+
+{% set mainNavigation =  app_navigation_data_links(document, navStartNode) %}
+{% set renderer = pimcore_nav_renderer('menu') %}
+<!-- ======= Top Bar ======= -->
+<section id="topbar" class="d-flex align-items-center">
+    <div class="container d-flex justify-content-center justify-content-md-between">
+        <div class="contact-info d-flex align-items-center">
+            <i class="bi bi-envelope d-flex align-items-center"><a
+                    href="mailto:{{ 'firm_email'|trans }}">{{ 'firm_email'|trans }}</a></i>
+            <i class="bi bi-phone d-flex align-items-center ms-4"><span>{{ 'firm_phone'|trans }}</span></i>
+        </div>
+        <div class="social-links d-none d-md-flex align-items-center">
+            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+        </div>
+    </div>
+</section>
+<!-- ======= Header ======= -->
+<header id="header" class="d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <div>
+                <a href="{{ navStartNode }}" class="logo text-decoration-none d-flex justify-content-between">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 430 430" style="width:50px;height:50px;enable-background:new 0 0 430 430;" xml:space="preserve">
+                        <style type="text/css">
+                            .st0{fill:#121331;}
+                            .st1{fill:#08A88A;}
+                        </style>
+                        <path class="st0" d="M296.4,370H70.3c-3.3,0-6-2.7-6-6V66c0-3.3,2.7-6,6-6h226.1c3.3,0,6,2.7,6,6v97.2c0,3.3-2.7,6-6,6s-6-2.7-6-6  V72H76.3V358h214.1V205.6c0-3.3,2.7-6,6-6s6,2.7,6,6V364C302.4,367.4,299.7,370,296.4,370z"/>
+                        <path class="st1" d="M189.7,298c-1.5,0-3-0.6-4.2-1.7c-1.3-1.2-1.9-2.9-1.8-4.7l1.2-23.4c0.1-1.7,0.9-3.2,2.1-4.3l140.8-140.8  c2.3-2.3,6.1-2.3,8.5,0l21.2,21.2c1.1,1.1,1.8,2.7,1.8,4.2s-0.6,3.1-1.8,4.2L216.4,294.1c-1,1-2.3,1.6-3.7,1.7l-22.5,2.2  C190,298,189.9,298,189.7,298z M196.8,271.3l-0.8,14.1l13.4-1.3l135.4-135.4L332,136L196.8,271.3z"/>
+                        <path class="st1" d="M346.7,150.5l-17.1-17.1l11.3-11.3c2.2-2.2,5.8-2.2,8,0l9.1,9.1c2.2,2.2,2.2,5.8,0,8L346.7,150.5z"/>
+                    </svg>
+                    <div class="pt-3"><span class="text-primary font-weight-bold">Pa</span><span class="text-info font-weight-bold">Pyrus</span></div>
+                </a>
+            </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                {% for page in mainNavigation %}
+                    {% if page.isVisible() and renderer.accept(page) %}
+                        {% if page.hasPages %}
+                            <li><a class="nav-link scrollto" href="{{ page.href }}">{{ page.label|trans }}</a></li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ page.href }}">{{ page.label|trans }}</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+    </div>
+</header><!-- End Header -->
+
+<main role="main">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {% if isPortal %}
+        {% if editmode %}
+            <section class="d-flex align-items-center">
+                <div class="container">
+                    <div class="row border">
+                        <div class="col-5">
+                            {{ pimcore_image("myImage",{"thumbnail": "header"}) }}
+                        </div>
+                        <div class="col-7">
+                            <h1>{{ pimcore_input('cHeadline-title',{'placeholder':'Headline'}) }}<span
+                                    class="mx-3">{{ pimcore_input('agentur',{'placeholder':'agentur'}) }}</span></h1>
+                            <p>{{ pimcore_input('cHeadline-text',{'placeholder':'Headline'}) }}</p>
+                            <div class="d-flex">
+                                {% set cLinkButton = pimcore_link('cLink-button', {
+                                    'class': 'btn-get-started scrollto'
+                                }) %}
+                                {{ cLinkButton|raw }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% else %}
+            {% set thumbnail = pimcore_image("myImage").getThumbnail("header") %}
+            <section id="hero" class="d-flex align-items-center" style="background: url('{{ thumbnail }}') top left;">
+                <div class="container" data-aos="zoom-out" data-aos-delay="100">
+                    <h1 class="text-capitalize text-white">{{ pimcore_input('cHeadline-title',{'placeholder':'Headline'}) }}
+                        <span class="mx-3">{{ pimcore_input('agentur',{'placeholder':'agentur'}) }}</span></h1>
+                    <h2 class="text-warning text-white">{{ pimcore_input('cHeadline-text',{'placeholder':'Headline'}) }}</h2>
+                    <div class="d-flex">
+                        {% set cLinkButton = pimcore_link('cLink-button', {
+                            'class': 'btn-get-started scrollto'
+                        }) %}
+                        {{ cLinkButton|raw }}
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+    {% else %}
+        {% block header %}{% endblock %}
+    {% endif %}
+
+    <div>
+        {{ block('content') }}
+    </div>
+
+    <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button"
+       title="Click to return on the top" data-toggle="tooltip" data-placement="left">
+        <span class="fa fa-arrow-up"></span>
+    </a>
+
+</main>
+
+{# include a document-snippet - in this case the footer document #}
+{{ pimcore_inc(document.getProperty('Footer')) }}
+
+{# output scripts added before #}
+{% block headscripts deferred %}
+{{ pimcore_head_script() }}
+{% endblock %}
+
+
+{% block inlinescripts deferred %}
+{{ pimcore_inline_script() }}
+{% endblock %}
+
+<script src="{{ asset('build/css/app.js') }}"></script>
+<script src="{{ asset('build/js/app.js') }}"></script>
+<script src="{{ asset('build/runtime.js') }}"></script>
+
+</body>
+</html>

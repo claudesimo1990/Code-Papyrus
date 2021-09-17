@@ -1,0 +1,30 @@
+
+{% include 'includes/settings.html.twig' %}
+
+<section id="skills" class="skills {% if pimcore_checkbox('background').isChecked() %} about section-bg my-4 {% endif %}">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+
+        <div class="section-title">
+            {% if editmode %}
+                <h3>{{ pimcore_input("title") }}</h3>
+                <h3>{{ pimcore_input("subtitle") }}</h3>
+                <p>{{ pimcore_input("text") }}</p>
+            {% else %}
+                <h2>{{ pimcore_input("title").render }}</h2>
+                <h3>{{ pimcore_input("subtitle").render }}</h3>
+                <p>{{ pimcore_input("text").render }}</p>
+            {% endif %}
+        </div>
+
+        <div class="row">
+            {% for skill in skills %}
+                <div class="progress">
+                    <span class="skill">{{ skill.name}} <i class="val">{{ skill.percentage }}%</i></span>
+                    <div class="progress-bar-wrap">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="{{ skill.percentage }}" aria-valuemin="0" aria-valuemax="{{ skill.percentage }}" style="width: {{ skill.percentage }}%;"></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

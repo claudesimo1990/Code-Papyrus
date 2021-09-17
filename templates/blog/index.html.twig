@@ -1,0 +1,57 @@
+{% extends 'master.html.twig' %}
+
+{% block content %}
+
+    {% set featured = get_featured_post() %}
+    {% set thumbnail = featured.image.getThumbnail("featured") %}
+
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Blog entries-->
+            <div class="col-lg-8">
+                <!-- Featured blog post-->
+                <div class="card mb-4">
+                    <a href="#!"><img class="card-img-top" src="{{ thumbnail }}" alt="..."></a>
+                    <div class="card-body">
+                        <div class="small text-muted">{{ featured.publishedAt|date("m.d.Y H:i", "Europe/Berlin") }}</div>
+                        <h2 class="card-title">{{ featured.title }}</h2>
+                        <p class="card-text">{{ featured.content[:200] | raw }}</p>
+                        <a class="btn btn-primary" href="{{ path('post_show',{'slug': featured.slug}) }}">mehr lesen →</a>
+                    </div>
+                </div>
+                <!-- Nested row for non-featured blog posts-->
+                <div class="row">
+                    {% for p in get_all_posts() %}
+                        {% set image = p.image.getThumbnail("cardPost") %}
+                        <div class="col-lg-6">
+                            <div class="card mb-4">
+                                <a href="#!"><img class="card-img-top" src="{{ image }}" alt="..."></a>
+                                <div class="card-body">
+                                    <div class="small text-muted">{{ p.publishedAt|date('d.m.y H:s') }}</div>
+                                    <h2 class="card-title h4">{{ p.title }}</h2>
+                                    <p class="card-text">{{ p.content[:100]|raw }}</p>
+                                    <a class="btn btn-primary" href="{{ path('post_show',{'slug': p.slug}) }}">mehr lesen →</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <!-- Pagination-->
+                <nav aria-label="Pagination">
+                    <hr class="my-0">
+                    <ul class="pagination justify-content-center my-4">
+                        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
+                        <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                        <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#!">15</a></li>
+                        <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <!-- Side widgets-->
+            {% include('includes/widgets.html.twig') %}
+        </div>
+    </div>
+{% endblock %}

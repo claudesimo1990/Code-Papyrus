@@ -1,0 +1,125 @@
+parameters:
+    secret: NKTdszqoisG95Hq/2W9fkKFKoPc0iyOT35cLC2FNQPY=
+    google_client_id: <google_client_id>
+    google_client_secret: <google_client_secret>
+    twitter_client_id: <twitter_client_id>
+    twitter_client_secret: <twitter_client_secret>
+
+    # use echo \Defuse\Crypto\Key::createNewRandomKey()->saveToAsciiSafeString(); to generate secret for data encryption
+    app_encryption_secret: "q2F9jO7YrapQ5E9aMwldgOWoiTnRELMhqdDO/STtPU8="
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        # automatically injects dependencies in your services
+        autowire: true
+        # automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+        # this means you cannot fetch services directly from the container via $container->get()
+        # if you need to do this, you can override this setting on individual services
+        public: false
+
+
+    # ---------------------------------------------------------
+    # Register all controllers of App as services
+    # ---------------------------------------------------------
+    App\Controller\:
+        resource: '../src/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
+
+
+    # ---------------------------------------------------------
+    # Register all commands of App as commands
+    # ---------------------------------------------------------
+    App\Command\:
+        resource: '../src/Command'
+        tags: ['console.command']
+
+
+
+    # ---------------------------------------------------------
+    # Forms
+    # ---------------------------------------------------------
+    App\Form\DeliveryAddressFormType: ~
+    App\Form\LoginFormType: ~
+    App\Form\RegistrationFormType: ~
+    App\Form\RegistrationFormHandler: ~
+    App\Form\CarSubmitFormType: ~
+
+
+
+    # ---------------------------------------------------------
+    # Misc Services
+    # ---------------------------------------------------------
+    App\Services\PasswordRecoveryService: ~
+    App\Services\NewsletterDoubleOptInService: ~
+    App\Services\SegmentTrackingHelperService: ~
+    App\Services\Workflow\CustomHtmlService: ~
+    App\Website\Navigation\BreadcrumbHelperService: ~
+
+    App\Model\Product\CalculatedValue\QualityCalculator:
+        public: true
+
+    App\Model\Product\CalculatedValue\AccessoryPartName:
+        public: true
+
+
+    # ---------------------------------------------------------
+    # Twig Extensions
+    # ---------------------------------------------------------
+    App\Twig\Extension\CategoryFilterExtension:
+        tags: ['twig.extension']
+
+    App\Twig\Extension\Country:
+        tags: ['twig.extension']
+
+    App\Twig\Extension\Currency:
+        tags: ['twig.extension']
+
+    App\Twig\Extension\GeneralFilterExtension:
+        tags: ['twig.extension']
+
+    App\Twig\Extension\NavigationExtension:
+        tags: ['twig.extension']
+
+    App\Twig\Extension\UniqidExtension:
+        tags: ['twig.extension']
+
+    App\Twig\Extension\LanguageSwitcherExtension:
+        tags: ['twig.extension']
+
+    App\Twig\Extension\ProductPageExtension:
+        tags: ['twig.extension']
+
+    App\Twig\Extension\CategoryExtension:
+        tags: ['twig.extension']
+
+    App\Twig\Extension\FeaturedPostExtension:
+        tags: ['twig.extension']
+
+
+    # ---------------------------------------------------------
+    # Link Generators for DataObjects
+    # ---------------------------------------------------------
+    App\Website\LinkGenerator\CategoryLinkGenerator:
+        public: true
+
+    App\Website\LinkGenerator\ProductLinkGenerator:
+        public: true
+
+    App\Website\LinkGenerator\NewsLinkGenerator:
+        public: true
+
+
+
+    # ---------------------------------------------------------
+    # Overwrite Pimcore Default Services
+    # ---------------------------------------------------------
+
+    # overwrite PimcoreUrl helper to add existing parameters to generated urls
+    Pimcore\Twig\Extension\Templating\PimcoreUrl:
+        class: App\Website\Tool\PimcoreUrl
+        arguments:
+            $generator: '@router'

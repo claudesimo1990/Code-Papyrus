@@ -1,0 +1,13 @@
+/node_modules
+/var
+/vendor
+/logs
+/data
+.idea
+.DS_Store
+.env
+Makefile
+*.png
+*.jpg
+public/var/tmp/thumbnails/
+config/local/database.yaml
