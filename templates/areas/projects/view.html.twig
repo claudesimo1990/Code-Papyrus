@@ -30,8 +30,8 @@
                         </div>
                         <div class="card-title fw-bolder text-center text-success text-uppercase">{{ project.name }}</div>
                         <div class="card-body">
-                            <p>{{ project.content }}</p>
-                            <a href="{{ project.link }}" class="card-link">Mehr</a>
+                            <p>{{ project.content[:200] | raw }}</p>
+                            <a href="{{ path('book_show', {'project' : project.id}) }}" class="card-link">Lire plus</a>
                         </div>
                     </div>
                 </div>

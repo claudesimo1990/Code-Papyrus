@@ -1,0 +1,23 @@
+{% extends 'master.html.twig' %}
+
+{% set thumbnail = book.image.getThumbnail("card") %}
+
+{% block content %}
+
+    <div class="container my-5">
+        <h1 class="text-center">{{ book.name }}</h1>
+        <div class="row my-5 py-5">
+            <div class="col-4">
+                <div class="embed-responsive embed-responsive-4by3">
+                    <div class="embed-responsive-item">
+                        <img src="{{ thumbnail }}" alt="" class="img-fluid w-100" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <p>{{ book.content }}</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

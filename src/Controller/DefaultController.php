@@ -5,6 +5,8 @@ namespace App\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Pimcore\Model\DataObject\Project;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends BaseController
 {
@@ -19,6 +21,15 @@ class DefaultController extends BaseController
         return $this->render('default/default.html.twig', [
             'isPortal' => true,
             'requestUri' => $requestUri
+        ]);
+    }
+
+    #[Route('/books/{project}', name: 'book_show')]
+    public function showAction(Project $project)
+    {
+        return $this->render('book/show.html.twig', [
+            'book' => $project,
+            'isPortal' => false
         ]);
     }
 
