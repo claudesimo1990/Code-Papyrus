@@ -19,7 +19,7 @@
                             </div>
                             <div class="card-title fw-bolder text-center text-success text-uppercase">{{ book.name }}</div>
                             <div class="card-body">
-                                <p>{{ book.content }}</p>
+                                <p>{{ book.content[:200] | raw }}</p>
                                 <div class="d-flex justify-content-between">
                                     <span class="border bg-secondary w-25 text-center text-white">{{ book.price }}€</span>
                                     <a href="{{ book.link }}" class="card-link">Acheter ici</a>
@@ -27,7 +27,7 @@
                             </div>
                         </div>
                     </div>
-                    {% if book.price  %}
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
